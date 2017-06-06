@@ -113,7 +113,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         bulletsNode.physicsBody?.categoryBitMask = CollisionCategory.bullets.rawValue
         bulletsNode.physicsBody?.contactTestBitMask = -1
         
-        bulletsNode.physicsBody?.applyForce(SCNVector3(0, 0, -1), asImpulse: true)
+        let bulletDirection = self.getUserDirection()
+        bulletsNode.physicsBody?.applyForce(bulletDirection, asImpulse: true)
         sceneView.scene.rootNode.addChildNode(bulletsNode)
         
     }
@@ -133,10 +134,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func removeNodeWithAnimation(_ node: SCNNode) {
         node.removeFromParentNode()
     }
-    /*
+    
     func getUserDirection() -> SCNVector3 {
-        self.sceneView.session.currentFrame?.
-    } */
+        if let frame = self.sceneView.session.currentFrame {
+        let mat = SCNMatrix4FromMat4(frame.camera.transform)
+            print("matrix", mat)
+        }
+        return SCNVector3(0, 0, -1)
+    }
     
     // MARK: - Contact Delegate
     
