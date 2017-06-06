@@ -31,13 +31,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.scene = scene
         sceneView.scene.physicsWorld.contactDelegate = self
         
-        let cubeNode = SCNNode(geometry: SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0))
-        cubeNode.position = SCNVector3(0, 0, -0.5) // SceneKit/AR coordinates are in meters
-        cubeNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: cubeNode, options: nil))
-        cubeNode.physicsBody?.isAffectedByGravity = false
-        cubeNode.physicsBody?.categoryBitMask = CollisionCategory.ship.rawValue
-        cubeNode.physicsBody?.contactTestBitMask = -1
-        sceneView.scene.rootNode.addChildNode(cubeNode)
+        self.addNewShip()
         
     }
     
@@ -125,6 +119,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     }
     
     // MARK: -
+    
+    func addNewShip() {
+        let cubeNode = SCNNode(geometry: SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0))
+        cubeNode.position = SCNVector3(0, 0, -0.5) // SceneKit/AR coordinates are in meters
+        cubeNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: cubeNode, options: nil))
+        cubeNode.physicsBody?.isAffectedByGravity = false
+        cubeNode.physicsBody?.categoryBitMask = CollisionCategory.ship.rawValue
+        cubeNode.physicsBody?.contactTestBitMask = -1
+        sceneView.scene.rootNode.addChildNode(cubeNode)
+    }
+    
+    func removeNodeWithAnimation(_ node: SCNNode) {
+        node.removeFromParentNode()
+    }
     /*
     func getUserDirection() -> SCNVector3 {
         self.sceneView.session.currentFrame?.
@@ -135,7 +143,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         //print("did begin contact", contact.nodeA.physicsBody!.categoryBitMask, contact.nodeB.physicsBody!.categoryBitMask)
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue {
+            self.removeNodeWithAnimation(contact.nodeA)
+            self.removeNodeWithAnimation(contact.nodeB)
             print("HIT SHIP")
+           // DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                self.addNewShip()
+            //})
+            
         }
     }
     
