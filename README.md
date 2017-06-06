@@ -2,4 +2,4 @@
 
 A basic Augmented Reality shooter made with ARKit (and hence only useable with the iOS 11 beta).
 
-![status](https://s3.amazonaws.com/spark-cdn/arshooter2.gif "Status GIF")
+![status](https://user-images.githubusercontent.com/13244177/26856310-c307c046-4ad7-11e7-9689-7dba5ed01845.gif "Status GIF")
