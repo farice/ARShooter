@@ -105,8 +105,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     // MARK: - Actions
     
-    @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) {
-        let bulletsNode = SCNNode(geometry: SCNSphere(radius: 0.05))
+    @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) { // fire bullet
+        let bulletsNode = SCNNode(geometry: SCNSphere(radius: 0.025))
         bulletsNode.position = SCNVector3(0, 0, -0.2) // SceneKit/AR coordinates are in meters
         bulletsNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: bulletsNode, options: nil))
         bulletsNode.physicsBody?.isAffectedByGravity = false
@@ -123,7 +123,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     func addNewShip() {
         let cubeNode = SCNNode(geometry: SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0))
-        cubeNode.position = SCNVector3(0, 0, -0.5) // SceneKit/AR coordinates are in meters
+        let posX = floatBetween(-0.5, and: 0.5)
+        let posY = floatBetween(-0.5, and: 0.5  )
+        cubeNode.position = SCNVector3(posX, posY, -1) // SceneKit/AR coordinates are in meters
         cubeNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: cubeNode, options: nil))
         cubeNode.physicsBody?.isAffectedByGravity = false
         cubeNode.physicsBody?.categoryBitMask = CollisionCategory.ship.rawValue
@@ -139,8 +141,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         if let frame = self.sceneView.session.currentFrame {
         let mat = SCNMatrix4FromMat4(frame.camera.transform)
             print("matrix", mat)
+            return SCNVector3(-1 * mat.m31, -1 * mat.m32, -1 * mat.m33)
         }
         return SCNVector3(0, 0, -1)
+    }
+    
+    func floatBetween(_ first: Float,  and second: Float) -> Float {
+        return (Float(arc4random()) / Float(UInt32.max)) * (first - second) + second
     }
     
     // MARK: - Contact Delegate
