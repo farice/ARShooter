@@ -106,12 +106,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     // MARK: - Actions
     
     @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) { // fire bullet
-        let bulletsNode = SCNNode(geometry: SCNSphere(radius: 0.025))
+        let bulletsNode = Bullet()
         bulletsNode.position = SCNVector3(0, 0, -0.2) // SceneKit/AR coordinates are in meters
-        bulletsNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: bulletsNode, options: nil))
-        bulletsNode.physicsBody?.isAffectedByGravity = false
-        bulletsNode.physicsBody?.categoryBitMask = CollisionCategory.bullets.rawValue
-        bulletsNode.physicsBody?.contactTestBitMask = -1
         
         let bulletDirection = self.getUserDirection()
         bulletsNode.physicsBody?.applyForce(bulletDirection, asImpulse: true)
@@ -122,14 +118,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     // MARK: -
     
     func addNewShip() {
-        let cubeNode = SCNNode(geometry: SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0))
+        let cubeNode = Ship()
+        
         let posX = floatBetween(-0.5, and: 0.5)
         let posY = floatBetween(-0.5, and: 0.5  )
         cubeNode.position = SCNVector3(posX, posY, -1) // SceneKit/AR coordinates are in meters
-        cubeNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: cubeNode, options: nil))
-        cubeNode.physicsBody?.isAffectedByGravity = false
-        cubeNode.physicsBody?.categoryBitMask = CollisionCategory.ship.rawValue
-        cubeNode.physicsBody?.contactTestBitMask = -1
         sceneView.scene.rootNode.addChildNode(cubeNode)
     }
     
