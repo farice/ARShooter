@@ -12,8 +12,10 @@ import SceneKit
 class Ship: SCNNode {
     override init() {
         super.init()
-        self.geometry = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
-        self.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: self, options: nil))
+        let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
+        self.geometry = box
+        let shape = SCNPhysicsShape(geometry: box, options: nil)
+        self.physicsBody = SCNPhysicsBody(type: .dynamic, shape: shape)
         self.physicsBody?.isAffectedByGravity = false
         self.physicsBody?.categoryBitMask = CollisionCategory.ship.rawValue
         self.physicsBody?.contactTestBitMask = -1
