@@ -104,9 +104,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) { // fire bullet
         let bulletsNode = Bullet()
-        bulletsNode.position = SCNVector3(0, 0, -0.2) // SceneKit/AR coordinates are in meters
         
-        let bulletDirection = self.getUserDirection()
+        let (direction, position) = self.getUserVector()
+        bulletsNode.position = position // SceneKit/AR coordinates are in meters
+        
+        let bulletDirection = direction
         bulletsNode.physicsBody?.applyForce(bulletDirection, asImpulse: true)
         sceneView.scene.rootNode.addChildNode(bulletsNode)
         
@@ -115,8 +117,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     // MARK: - Game Functionality
     
     func configureSession() {
-        if utsname().hasAtLeastA9() { // checks if user's device supports the more precise ARWorldTrackingSessionConfiguration
-            
+        if ARWorldTrackingSessionConfiguration.isSupported { // checks if user's device supports the more precise ARWorldTrackingSessionConfiguration
+                                                            // equivalent to `if utsname().hasAtLeastA9()`
         // Create a session configuration
         let configuration = ARWorldTrackingSessionConfiguration()
         configuration.planeDetection = ARWorldTrackingSessionConfiguration.PlaneDetection.horizontal
@@ -145,13 +147,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         node.removeFromParentNode()
     }
     
-    func getUserDirection() -> SCNVector3 {
+    func getUserVector() -> (SCNVector3, SCNVector3) { // (direction, position)
         if let frame = self.sceneView.session.currentFrame {
-        let mat = SCNMatrix4FromMat4(frame.camera.transform)
-            //print("matrix", mat)
-            return SCNVector3(-1 * mat.m31, -1 * mat.m32, -1 * mat.m33)
+            let mat = SCNMatrix4FromMat4(frame.camera.transform)
+            let dir = SCNVector3(-1 * mat.m31, -1 * mat.m32, -1 * mat.m33)
+            let pos = SCNVector3(mat.m41, mat.m42, mat.m43)
+            
+            return (dir, pos)
         }
-        return SCNVector3(0, 0, -1)
+        return (SCNVector3(0, 0, -1), SCNVector3(0, 0, -0.2))
     }
     
     func floatBetween(_ first: Float,  and second: Float) -> Float {
