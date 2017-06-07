@@ -38,13 +38,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Create a session configuration
-        let configuration = ARWorldTrackingSessionConfiguration()
-        configuration.planeDetection = ARWorldTrackingSessionConfiguration.PlaneDetection.horizontal
-        print(configuration.planeDetection)
-        
-        // Run the view's session
-        sceneView.session.run(configuration)
+        self.configureSession()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -85,7 +79,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
     }
     
+    /* Uncomment this method to visualize "plane detection"
+     In other words, ARKit detects planes in the Real World to serve as anchors--so we can add a node to visualize them.
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        
         // This visualization covers only detected planes.
         guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
         print("flat plane detected")
@@ -101,7 +98,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         // ARKit owns the node corresponding to the anchor, so make the plane a child node.
         node.addChildNode(planeNode)
-    }
+    } */
     
     // MARK: - Actions
     
@@ -115,7 +112,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
     }
     
-    // MARK: -
+    // MARK: - Game Functionality
+    
+    func configureSession() {
+        if utsname().hasAtLeastA9() { // checks if user's device supports the more precise ARWorldTrackingSessionConfiguration
+            
+        // Create a session configuration
+        let configuration = ARWorldTrackingSessionConfiguration()
+        configuration.planeDetection = ARWorldTrackingSessionConfiguration.PlaneDetection.horizontal
+        
+        // Run the view's session
+        sceneView.session.run(configuration)
+        } else {
+            // slightly less immersive AR experience due to lower end processor
+            let configuration = ARSessionConfiguration()
+            
+            // Run the view's session
+            sceneView.session.run(configuration)
+        }
+    }
     
     func addNewShip() {
         let cubeNode = Ship()
@@ -133,7 +148,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func getUserDirection() -> SCNVector3 {
         if let frame = self.sceneView.session.currentFrame {
         let mat = SCNMatrix4FromMat4(frame.camera.transform)
-            print("matrix", mat)
+            //print("matrix", mat)
             return SCNVector3(-1 * mat.m31, -1 * mat.m32, -1 * mat.m33)
         }
         return SCNVector3(0, 0, -1)
@@ -150,10 +165,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue {
             self.removeNodeWithAnimation(contact.nodeA)
             self.removeNodeWithAnimation(contact.nodeB)
-            print("HIT SHIP")
-           // DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                self.addNewShip()
-            //})
+            print("Hit ship!")
+            self.addNewShip()
             
         }
     }
@@ -165,4 +178,22 @@ struct CollisionCategory: OptionSet {
     
     static let bullets  = CollisionCategory(rawValue: 1 << 0)
     static let ship = CollisionCategory(rawValue: 1 << 1)
+}
+
+extension utsname {
+    func hasAtLeastA9() -> Bool { // checks if device has at least A9 chip for configuration
+        var systemInfo = self
+        uname(&systemInfo)
+        let str = withUnsafePointer(to: &systemInfo.machine.0) { ptr in
+            return String(cString: ptr)
+        }
+        switch str {
+        case "iPhone8,1", "iPhone8,2", "iPhone8,4", "iPhone9,1", "iPhone9,2", "iPhone9,3", "iPhone9,4": // iphone with at least A9 processor
+            return true
+        case "iPad6,7", "iPad6,8", "iPad6,3", "iPad6,4", "iPad6,11", "iPad6,12": // ipad with at least A9 processor
+            return true
+        default:
+            return false
+        }
+    }
 }
