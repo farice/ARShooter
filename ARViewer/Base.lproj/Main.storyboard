@@ -12,25 +12,51 @@
         <scene sceneID="tXr-a1-R10">
             <objects>
                 <viewController id="BV1-FR-VrT" customClass="ViewController" customModule="ARViewer" customModuleProvider="target" sceneMemberID="viewController">
-                    <arscnView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="BrB-h1-WRS">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Qbi-Vq-8Ex"/>
+                        <viewControllerLayoutGuide type="bottom" id="GH9-WU-5eh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3lZ-pC-778">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <gestureRecognizers/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="ZMz-sM-wHZ" appends="YES" id="9GL-Ey-1cy"/>
-                        </connections>
-                    </arscnView>
+                        <subviews>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZw-fN-xm5">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="X9b-cS-TWE" appends="YES" id="lkT-rj-taA"/>
+                                </connections>
+                            </arscnView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qii-hK-aFk">
+                                <rect key="frame" x="156" y="28" width="63" height="43"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="36"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="hZw-fN-xm5" secondAttribute="trailing" id="5Er-AD-2L2"/>
+                            <constraint firstItem="hZw-fN-xm5" firstAttribute="leading" secondItem="3lZ-pC-778" secondAttribute="leading" id="7NI-w5-EWS"/>
+                            <constraint firstItem="hZw-fN-xm5" firstAttribute="top" secondItem="3lZ-pC-778" secondAttribute="top" id="Z75-Io-7Do"/>
+                            <constraint firstItem="GH9-WU-5eh" firstAttribute="top" secondItem="hZw-fN-xm5" secondAttribute="bottom" id="dXi-SH-1j3"/>
+                            <constraint firstItem="qii-hK-aFk" firstAttribute="top" secondItem="Qbi-Vq-8Ex" secondAttribute="bottom" constant="8" id="nhq-ed-GeK"/>
+                            <constraint firstItem="qii-hK-aFk" firstAttribute="centerX" secondItem="3lZ-pC-778" secondAttribute="centerX" id="niX-dK-uUP"/>
+                        </constraints>
+                    </view>
                     <connections>
-                        <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
+                        <outlet property="sceneView" destination="hZw-fN-xm5" id="fzd-a4-oL1"/>
+                        <outlet property="scoreLabel" destination="qii-hK-aFk" id="k4y-KH-bXr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="ZMz-sM-wHZ">
+                <tapGestureRecognizer id="X9b-cS-TWE">
                     <connections>
-                        <action selector="didTapScreen:" destination="BV1-FR-VrT" id="gtm-yV-KYe"/>
+                        <action selector="didTapScreen:" destination="BV1-FR-VrT" id="xbi-Pk-Fkj"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="116.49175412293854"/>
         </scene>
     </scenes>
 </document>

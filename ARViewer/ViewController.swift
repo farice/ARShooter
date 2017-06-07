@@ -14,6 +14,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     @IBOutlet var sceneView: ARSCNView!
     
+    @IBOutlet weak var scoreLabel: UILabel!
+    
+    private var userScore: Int = 0 {
+        didSet {
+            DispatchQueue.main.async {
+                self.scoreLabel.text = String(self.userScore)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,6 +43,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         self.addNewShip()
         
+        self.userScore = 0
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -171,7 +182,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             self.removeNodeWithAnimation(contact.nodeB)
             print("Hit ship!")
             self.addNewShip()
-            
+            self.userScore += 1
         }
     }
     
