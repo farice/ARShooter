@@ -18,7 +18,7 @@ class Ship: SCNNode {
         self.physicsBody = SCNPhysicsBody(type: .dynamic, shape: shape)
         self.physicsBody?.isAffectedByGravity = false
         self.physicsBody?.categoryBitMask = CollisionCategory.ship.rawValue
-        self.physicsBody?.contactTestBitMask = -1
+        self.physicsBody?.contactTestBitMask = CollisionCategory.bullets.rawValue
         
         // add texture
         let material = SCNMaterial()
