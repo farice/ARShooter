@@ -178,11 +178,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         //print("did begin contact", contact.nodeA.physicsBody!.categoryBitMask, contact.nodeB.physicsBody!.categoryBitMask)
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue {
-            self.removeNodeWithAnimation(contact.nodeA)
-            self.removeNodeWithAnimation(contact.nodeB)
             print("Hit ship!")
-            self.addNewShip()
+            self.removeNodeWithAnimation(contact.nodeB)
             self.userScore += 1
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { // remove/replace ship after half a second to visualize collision
+                self.removeNodeWithAnimation(contact.nodeA)
+                self.addNewShip()
+            })
+            
         }
     }
     
