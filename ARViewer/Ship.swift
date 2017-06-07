@@ -22,7 +22,7 @@ class Ship: SCNNode {
         
         // add texture
         let material = SCNMaterial()
-        material.diffuse.contents = UIImage(named: "faris")
+        material.diffuse.contents = UIImage(named: "galaxy")
         self.geometry?.materials  = [material, material, material, material, material, material]
     }
     
