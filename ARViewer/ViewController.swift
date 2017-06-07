@@ -154,7 +154,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.scene.rootNode.addChildNode(cubeNode)
     }
     
-    func removeNodeWithAnimation(_ node: SCNNode) {
+    func removeNodeWithAnimation(_ node: SCNNode, explosion: Bool) {
+        if explosion {
+            let particleSystem = SCNParticleSystem(named: "explosion", inDirectory: nil)
+            let systemNode = SCNNode()
+            systemNode.addParticleSystem(particleSystem!)
+            systemNode.position = node.position
+            sceneView.scene.rootNode.addChildNode(systemNode)
+        }
+        
         node.removeFromParentNode()
     }
     
@@ -179,11 +187,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         //print("did begin contact", contact.nodeA.physicsBody!.categoryBitMask, contact.nodeB.physicsBody!.categoryBitMask)
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue {
             print("Hit ship!")
-            self.removeNodeWithAnimation(contact.nodeB)
+            self.removeNodeWithAnimation(contact.nodeB, explosion: false)
             self.userScore += 1
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { // remove/replace ship after half a second to visualize collision
-                self.removeNodeWithAnimation(contact.nodeA)
+                self.removeNodeWithAnimation(contact.nodeA, explosion: true)
                 self.addNewShip()
             })
             

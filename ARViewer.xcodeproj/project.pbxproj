@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06325E381EE8420E00F0D093 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 06325E361EE8420E00F0D093 /* spark.png */; };
+		06325E391EE8420E00F0D093 /* explosion.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 06325E371EE8420E00F0D093 /* explosion.scnp */; };
 		06C51BE81EE68B41006AC09A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C51BE71EE68B41006AC09A /* AppDelegate.swift */; };
 		06C51BEA1EE68B41006AC09A /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 06C51BE91EE68B41006AC09A /* art.scnassets */; };
 		06C51BEC1EE68B41006AC09A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C51BEB1EE68B41006AC09A /* ViewController.swift */; };
@@ -18,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		06325E361EE8420E00F0D093 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		06325E371EE8420E00F0D093 /* explosion.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = explosion.scnp; sourceTree = "<group>"; };
 		06C51BE41EE68B41006AC09A /* ARViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06C51BE71EE68B41006AC09A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		06C51BE91EE68B41006AC09A /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -63,6 +67,8 @@
 				06C51BE71EE68B41006AC09A /* AppDelegate.swift */,
 				06C51BE91EE68B41006AC09A /* art.scnassets */,
 				06C51BEB1EE68B41006AC09A /* ViewController.swift */,
+				06325E361EE8420E00F0D093 /* spark.png */,
+				06325E371EE8420E00F0D093 /* explosion.scnp */,
 				06FA0DB71EE763F50051FC68 /* Bullet.swift */,
 				06FA0DB51EE7628F0051FC68 /* Ship.swift */,
 				06C51BED1EE68B41006AC09A /* Main.storyboard */,
@@ -131,8 +137,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06325E381EE8420E00F0D093 /* spark.png in Resources */,
 				06C51BEA1EE68B41006AC09A /* art.scnassets in Resources */,
 				06C51BF41EE68B41006AC09A /* LaunchScreen.storyboard in Resources */,
+				06325E391EE8420E00F0D093 /* explosion.scnp in Resources */,
 				06C51BF11EE68B41006AC09A /* Assets.xcassets in Resources */,
 				06C51BEF1EE68B41006AC09A /* Main.storyboard in Resources */,
 			);
