@@ -77,7 +77,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
-        
+        print("Session failed with error: \(error.localizedDescription)")
     }
     
     func sessionWasInterrupted(_ session: ARSession) {
