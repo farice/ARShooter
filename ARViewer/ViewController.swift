@@ -1,6 +1,7 @@
 //
 //  ViewController.swift
 //  ARViewer
+// http://texnotes.me/post/5/ for tutorial
 //
 //  Created by Faris Sbahi on 6/6/17.
 //  Copyright © 2017 Faris Sbahi. All rights reserved.
@@ -18,6 +19,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     private var userScore: Int = 0 {
         didSet {
+            // ensure UI update runs on main thread
             DispatchQueue.main.async {
                 self.scoreLabel.text = String(self.userScore)
             }
@@ -33,8 +35,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
         
-        // Create a new scene
-        //let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        // Create a new empty scene
         let scene = SCNScene()
         
         // Set the scene to the view
@@ -90,8 +91,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
     }
     
-    /* Uncomment this method to visualize "plane detection"
-     In other words, ARKit detects planes in the Real World to serve as anchors--so we can add a node to visualize them.
+/*
+     // ARKit detects planes in the Real World to serve as anchors--we can add a node manually to visualize them.
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         
         // This visualization covers only detected planes.
@@ -109,11 +110,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         // ARKit owns the node corresponding to the anchor, so make the plane a child node.
         node.addChildNode(planeNode)
-    } */
+    }
+ */
     
     // MARK: - Actions
     
-    @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) { // fire bullet
+    @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) { // fire bullet in direction camera is facing
         let bulletsNode = Bullet()
         
         let (direction, position) = self.getUserVector()
@@ -159,25 +161,27 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             let particleSystem = SCNParticleSystem(named: "explosion", inDirectory: nil)
             let systemNode = SCNNode()
             systemNode.addParticleSystem(particleSystem!)
+            // place explosion where node is
             systemNode.position = node.position
             sceneView.scene.rootNode.addChildNode(systemNode)
         }
         
+        // remove node
         node.removeFromParentNode()
     }
     
     func getUserVector() -> (SCNVector3, SCNVector3) { // (direction, position)
         if let frame = self.sceneView.session.currentFrame {
-            let mat = SCNMatrix4FromMat4(frame.camera.transform)
-            let dir = SCNVector3(-1 * mat.m31, -1 * mat.m32, -1 * mat.m33)
-            let pos = SCNVector3(mat.m41, mat.m42, mat.m43)
+            let mat = SCNMatrix4FromMat4(frame.camera.transform) // 4x4 transform matrix describing camera in world space
+            let dir = SCNVector3(-1 * mat.m31, -1 * mat.m32, -1 * mat.m33) // orientation of camera in world space
+            let pos = SCNVector3(mat.m41, mat.m42, mat.m43) // location of camera in world space
             
             return (dir, pos)
         }
         return (SCNVector3(0, 0, -1), SCNVector3(0, 0, -0.2))
     }
     
-    func floatBetween(_ first: Float,  and second: Float) -> Float {
+    func floatBetween(_ first: Float,  and second: Float) -> Float { // random float between upper and lower bound (inclusive)
         return (Float(arc4random()) / Float(UInt32.max)) * (first - second) + second
     }
     
@@ -185,9 +189,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         //print("did begin contact", contact.nodeA.physicsBody!.categoryBitMask, contact.nodeB.physicsBody!.categoryBitMask)
-        if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue {
+        if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue { // this conditional is not required--we've used the bit masks to ensure only one type of collision takes place--will be necessary as soon as more collisions are created/enabled
             print("Hit ship!")
-            self.removeNodeWithAnimation(contact.nodeB, explosion: false)
+            self.removeNodeWithAnimation(contact.nodeB, explosion: false) // remove the bullet
             self.userScore += 1
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { // remove/replace ship after half a second to visualize collision
@@ -203,8 +207,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 struct CollisionCategory: OptionSet {
     let rawValue: Int
     
-    static let bullets  = CollisionCategory(rawValue: 1 << 0)
-    static let ship = CollisionCategory(rawValue: 1 << 1)
+    static let bullets  = CollisionCategory(rawValue: 1 << 0) // 00...01
+    static let ship = CollisionCategory(rawValue: 1 << 1) // 00..10
 }
 
 extension utsname {

@@ -9,6 +9,7 @@
 import UIKit
 import SceneKit
 
+// Floating boxes that appear around you
 class Ship: SCNNode {
     override init() {
         super.init()
@@ -17,6 +18,8 @@ class Ship: SCNNode {
         let shape = SCNPhysicsShape(geometry: box, options: nil)
         self.physicsBody = SCNPhysicsBody(type: .dynamic, shape: shape)
         self.physicsBody?.isAffectedByGravity = false
+        
+        // see http://texnotes.me/post/5/ for details on collisions and bit masks
         self.physicsBody?.categoryBitMask = CollisionCategory.ship.rawValue
         self.physicsBody?.contactTestBitMask = CollisionCategory.bullets.rawValue
         

@@ -9,6 +9,7 @@
 import UIKit
 import SceneKit
 
+// Spheres that are shot at the "ships"
 class Bullet: SCNNode {
     override init () {
         super.init()
@@ -17,6 +18,8 @@ class Bullet: SCNNode {
         let shape = SCNPhysicsShape(geometry: sphere, options: nil)
         self.physicsBody = SCNPhysicsBody(type: .dynamic, shape: shape)
         self.physicsBody?.isAffectedByGravity = false
+        
+        // see http://texnotes.me/post/5/ for details on collisions and bit masks
         self.physicsBody?.categoryBitMask = CollisionCategory.bullets.rawValue
         self.physicsBody?.contactTestBitMask = CollisionCategory.ship.rawValue
         
