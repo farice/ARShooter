@@ -4,7 +4,7 @@ A basic Augmented Reality shooter made with ARKit (and hence only useable with t
 
 Star if you're interested in a [tutorial](http://texnotes.me/post/5/).
 
-![status](https://user-images.githubusercontent.com/13244177/26856310-c307c046-4ad7-11e7-9689-7dba5ed01845.gif "Status GIF")
+![status](https://user-images.githubusercontent.com/13244177/26912181-a08e94cc-4bc7-11e7-9261-2ed24e69f1f7.gif "Status GIF")
 
 ### Update: Associated tutorial is now available [here](http://texnotes.me/post/5/)
 
