@@ -172,7 +172,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     func getUserVector() -> (SCNVector3, SCNVector3) { // (direction, position)
         if let frame = self.sceneView.session.currentFrame {
-            let mat = SCNMatrix4FromMat4(frame.camera.transform) // 4x4 transform matrix describing camera in world space
+            let mat = SCNMatrix4(frame.camera.transform) // 4x4 transform matrix describing camera in world space
             let dir = SCNVector3(-1 * mat.m31, -1 * mat.m32, -1 * mat.m33) // orientation of camera in world space
             let pos = SCNVector3(mat.m41, mat.m42, mat.m43) // location of camera in world space
             
