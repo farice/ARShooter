@@ -125,6 +125,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         bulletsNode.physicsBody?.applyForce(bulletDirection, asImpulse: true)
         sceneView.scene.rootNode.addChildNode(bulletsNode)
         
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: {
+            print("removing bullet")
+            self.removeNodeWithAnimation(bulletsNode, explosion: false)
+        })
+        
     }
     
     // MARK: - Game Functionality
