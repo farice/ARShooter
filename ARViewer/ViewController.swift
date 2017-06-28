@@ -10,6 +10,9 @@
 import UIKit
 import SceneKit
 import ARKit
+import AVFoundation
+var Player: AVAudioPlayer = AVAudioPlayer()
+
 
 class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate {
 
@@ -116,6 +119,19 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     // MARK: - Actions
     
     @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) { // fire bullet in direction camera is facing
+        
+        do
+        {
+            let MusicURL = Bundle.main.path(forResource: "torpedo", ofType: "mp3")
+            try Player = AVAudioPlayer(contentsOf: NSURL (fileURLWithPath:MusicURL!) as URL)
+            Player.prepareToPlay()
+            Player.play()
+        }
+        catch let error as NSError {
+            print(error.description)
+        }
+        
+        
         let bulletsNode = Bullet()
         
         let (direction, position) = self.getUserVector()
@@ -158,6 +174,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     func removeNodeWithAnimation(_ node: SCNNode, explosion: Bool) {
         if explosion {
+            
+            do
+            {
+                let MusicURL = Bundle.main.path(forResource: "collision", ofType: "mp3")
+                try Player = AVAudioPlayer(contentsOf: NSURL (fileURLWithPath:MusicURL!) as URL)
+                Player.prepareToPlay()
+                Player.play()
+            }
+            catch let error as NSError {
+                print(error.description)
+            }
+            
             let particleSystem = SCNParticleSystem(named: "explosion", inDirectory: nil)
             let systemNode = SCNNode()
             systemNode.addParticleSystem(particleSystem!)
@@ -190,6 +218,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         //print("did begin contact", contact.nodeA.physicsBody!.categoryBitMask, contact.nodeB.physicsBody!.categoryBitMask)
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue { // this conditional is not required--we've used the bit masks to ensure only one type of collision takes place--will be necessary as soon as more collisions are created/enabled
+            
+            do
+            {
+                let MusicURL = Bundle.main.path(forResource: "explosion", ofType: "mp3")
+                try Player = AVAudioPlayer(contentsOf: NSURL (fileURLWithPath:MusicURL!) as URL)
+                Player.prepareToPlay()
+                Player.play()
+            }
+            catch let error as NSError {
+                print(error.description)
+            }
+            
             print("Hit ship!")
             self.removeNodeWithAnimation(contact.nodeB, explosion: false) // remove the bullet
             self.userScore += 1
