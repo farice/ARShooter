@@ -120,6 +120,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) { // fire bullet in direction camera is facing
         
+        // Play torpedo sound when bullet is launched
+        
         do
         {
             let MusicURL = Bundle.main.path(forResource: "torpedo", ofType: "mp3")
@@ -173,11 +175,27 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     }
     
     func removeNodeWithAnimation(_ node: SCNNode, explosion: Bool) {
+        
+        // Play collision sound for all collisions (bullet-bullet, etc.)
+        
+        do
+        {
+            let MusicURL = Bundle.main.path(forResource: "collision", ofType: "mp3")
+            try Player = AVAudioPlayer(contentsOf: NSURL (fileURLWithPath:MusicURL!) as URL)
+            Player.prepareToPlay()
+            Player.play()
+        }
+        catch let error as NSError {
+            print(error.description)
+        }
+        
         if explosion {
+            
+            // Play explosion sound for bullet-ship collisions
             
             do
             {
-                let MusicURL = Bundle.main.path(forResource: "collision", ofType: "mp3")
+                let MusicURL = Bundle.main.path(forResource: "explosion", ofType: "mp3")
                 try Player = AVAudioPlayer(contentsOf: NSURL (fileURLWithPath:MusicURL!) as URL)
                 Player.prepareToPlay()
                 Player.play()
@@ -218,17 +236,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         //print("did begin contact", contact.nodeA.physicsBody!.categoryBitMask, contact.nodeB.physicsBody!.categoryBitMask)
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue { // this conditional is not required--we've used the bit masks to ensure only one type of collision takes place--will be necessary as soon as more collisions are created/enabled
-            
-            do
-            {
-                let MusicURL = Bundle.main.path(forResource: "explosion", ofType: "mp3")
-                try Player = AVAudioPlayer(contentsOf: NSURL (fileURLWithPath:MusicURL!) as URL)
-                Player.prepareToPlay()
-                Player.play()
-            }
-            catch let error as NSError {
-                print(error.description)
-            }
             
             print("Hit ship!")
             self.removeNodeWithAnimation(contact.nodeB, explosion: false) // remove the bullet
