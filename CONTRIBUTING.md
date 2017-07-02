@@ -1,7 +1,5 @@
 ## Contribution tips and guidelines
 
-This section gives the experienced contributor some tips and guidelines.
-
 ### Pull requests are welcome
 
 Don't hesitate to fix small bugs. Significant changes should be documented as [a GitHub issue](https://github.com/farice/arshooter/issues) before work is performed.
@@ -11,8 +9,7 @@ Don't hesitate to fix small bugs. Significant changes should be documented as [a
 Fork the repository and make changes on your fork in a feature branch:
 
 - If it's a bug fix branch, name it XXXX-bug_description where XXXX is the GitHub issue number. 
-- If it's a feature branch, create an enhancement issue, and name it XXXX-enhancement_description where XXXX is the number of the
-	issue.
+- If it's a feature branch, create an enhancement issue, and name it XXXX-enhancement_description where XXXX is the GitHub issue number.
 
 Update the documentation when creating or modifying features.
 
@@ -68,11 +65,13 @@ By making a contribution to this project, I certify that:
 
 Then you just add a line to every git commit message:
 
-    Signed-off-by: Joe Smith <joe.smith@email.com>
+    Signed-off-by: John Appleseed <john.appleseed@email.com>
 
 Use your real name.
 
 If you set your `user.name` and `user.email` git configs, you can sign your
 commit automatically with `git commit -s`.
+
+---
 
 > Based substantially on [Docker contributing guidelines](https://raw.githubusercontent.com/moby/moby/master/CONTRIBUTING.md)
