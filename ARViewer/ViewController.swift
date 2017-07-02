@@ -11,7 +11,8 @@ import UIKit
 import SceneKit
 import ARKit
 import AVFoundation
-var Player: AVAudioPlayer = AVAudioPlayer()
+
+var player: AVAudioPlayer!
 
 
 class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate {
@@ -124,10 +125,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         do
         {
-            let MusicURL = Bundle.main.path(forResource: "torpedo", ofType: "mp3")
-            try Player = AVAudioPlayer(contentsOf: NSURL (fileURLWithPath:MusicURL!) as URL)
-            Player.prepareToPlay()
-            Player.play()
+            if let torpedoURL = Bundle.main.url(forResource: "torpedo", withExtension: "mp3") {
+            
+            try player = AVAudioPlayer(contentsOf: torpedoURL)
+            player.play()
+                
+            }
         }
         catch let error as NSError {
             print(error.description)
@@ -180,10 +183,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         do
         {
-            let MusicURL = Bundle.main.path(forResource: "collision", ofType: "mp3")
-            try Player = AVAudioPlayer(contentsOf: NSURL (fileURLWithPath:MusicURL!) as URL)
-            Player.prepareToPlay()
-            Player.play()
+            if let collisionURL = Bundle.main.url(forResource: "collision", withExtension: "mp3") {
+                
+                try player = AVAudioPlayer(contentsOf: collisionURL)
+                player.play()
+                
+            }
         }
         catch let error as NSError {
             print(error.description)
@@ -195,10 +200,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             
             do
             {
-                let MusicURL = Bundle.main.path(forResource: "explosion", ofType: "mp3")
-                try Player = AVAudioPlayer(contentsOf: NSURL (fileURLWithPath:MusicURL!) as URL)
-                Player.prepareToPlay()
-                Player.play()
+                if let explosionURL = Bundle.main.url(forResource: "explosion", withExtension: "mp3") {
+                    
+                    try player = AVAudioPlayer(contentsOf: explosionURL)
+                    player.play()
+                    
+                }
             }
             catch let error as NSError {
                 print(error.description)
