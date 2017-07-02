@@ -10,12 +10,15 @@
 import UIKit
 import SceneKit
 import ARKit
+import AVFoundation
 
 class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
     @IBOutlet weak var scoreLabel: UILabel!
+    
+    var player: AVAudioPlayer!
     
     private var userScore: Int = 0 {
         didSet {
@@ -116,6 +119,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     // MARK: - Actions
     
     @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) { // fire bullet in direction camera is facing
+        
+        // Play torpedo sound when bullet is launched
+        
+        self.playSoundEffect(ofType: .torpedo)
+        
         let bulletsNode = Bullet()
         
         let (direction, position) = self.getUserVector()
@@ -162,7 +170,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     }
     
     func removeNodeWithAnimation(_ node: SCNNode, explosion: Bool) {
+        
+        // Play collision sound for all collisions (bullet-bullet, etc.)
+        
+        self.playSoundEffect(ofType: .collision)
+        
         if explosion {
+            
+            // Play explosion sound for bullet-ship collisions
+            
+            self.playSoundEffect(ofType: .explosion)
+            
             let particleSystem = SCNParticleSystem(named: "explosion", inDirectory: nil)
             let systemNode = SCNNode()
             systemNode.addParticleSystem(particleSystem!)
@@ -195,6 +213,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         //print("did begin contact", contact.nodeA.physicsBody!.categoryBitMask, contact.nodeB.physicsBody!.categoryBitMask)
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.ship.rawValue { // this conditional is not required--we've used the bit masks to ensure only one type of collision takes place--will be necessary as soon as more collisions are created/enabled
+            
             print("Hit ship!")
             self.removeNodeWithAnimation(contact.nodeB, explosion: false) // remove the bullet
             self.userScore += 1
@@ -204,6 +223,27 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 self.addNewShip()
             })
             
+        }
+    }
+    
+    // MARK: - Sound Effects
+    
+    func playSoundEffect(ofType effect: SoundEffect) {
+        
+        // Async to avoid substantial cost to graphics processing (may result in sound effect delay however)
+        DispatchQueue.main.async {
+            do
+            {
+                if let effectURL = Bundle.main.url(forResource: effect.rawValue, withExtension: "mp3") {
+                    
+                    self.player = try AVAudioPlayer(contentsOf: effectURL)
+                    self.player.play()
+                    
+                }
+            }
+            catch let error as NSError {
+                print(error.description)
+            }
         }
     }
     
@@ -232,4 +272,10 @@ extension utsname {
             return false
         }
     }
+}
+
+enum SoundEffect: String {
+    case explosion = "explosion"
+    case collision = "collision"
+    case torpedo = "torpedo"
 }
