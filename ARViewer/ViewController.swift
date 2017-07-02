@@ -123,19 +123,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         // Play torpedo sound when bullet is launched
         
-        do
-        {
-            if let torpedoURL = Bundle.main.url(forResource: "torpedo", withExtension: "mp3") {
-            
-            try player = AVAudioPlayer(contentsOf: torpedoURL)
-            player.play()
-                
-            }
-        }
-        catch let error as NSError {
-            print(error.description)
-        }
-        
+        self.playSoundEffect(ofType: .torpedo)
         
         let bulletsNode = Bullet()
         
@@ -181,35 +169,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         // Play collision sound for all collisions (bullet-bullet, etc.)
         
-        do
-        {
-            if let collisionURL = Bundle.main.url(forResource: "collision", withExtension: "mp3") {
-                
-                try player = AVAudioPlayer(contentsOf: collisionURL)
-                player.play()
-                
-            }
-        }
-        catch let error as NSError {
-            print(error.description)
-        }
+        self.playSoundEffect(ofType: .collision)
         
         if explosion {
             
             // Play explosion sound for bullet-ship collisions
             
-            do
-            {
-                if let explosionURL = Bundle.main.url(forResource: "explosion", withExtension: "mp3") {
-                    
-                    try player = AVAudioPlayer(contentsOf: explosionURL)
-                    player.play()
-                    
-                }
-            }
-            catch let error as NSError {
-                print(error.description)
-            }
+            self.playSoundEffect(ofType: .explosion)
             
             let particleSystem = SCNParticleSystem(named: "explosion", inDirectory: nil)
             let systemNode = SCNNode()
@@ -256,6 +222,27 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
     }
     
+    // MARK: - Sound Effects
+    
+    func playSoundEffect(ofType effect: SoundEffect) {
+        
+        // Async to avoid substantial cost to graphics processing
+        DispatchQueue.main.async {
+            do
+            {
+                if let effectURL = Bundle.main.url(forResource: effect.rawValue, withExtension: "mp3") {
+                    
+                    try player = AVAudioPlayer(contentsOf: effectURL)
+                    player.play()
+                    
+                }
+            }
+            catch let error as NSError {
+                print(error.description)
+            }
+        }
+    }
+    
 }
 
 struct CollisionCategory: OptionSet {
@@ -281,4 +268,10 @@ extension utsname {
             return false
         }
     }
+}
+
+enum SoundEffect: String {
+    case explosion = "explosion"
+    case collision = "collision"
+    case torpedo = "torpedo"
 }
