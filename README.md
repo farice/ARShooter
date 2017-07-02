@@ -34,7 +34,9 @@ Finally, open the `*.xcodeproj` file and build to your [supported device](#requi
 
 ## FAQ
 
-> I am seeing the error: Cannot invoke initializer for type 'SCNMatrix4' with an argument list of type '(matrix_float4x4)'
+### I am getting the SCNMatrix error:
+
+`Cannot invoke initializer for type 'SCNMatrix4' with an argument list of type '(matrix_float4x4)'`
 
 Please update to the latest Xcode beta (this error is a result of a syntactical change made in Beta 2). If you insist on using Xcode Beta 1, then simply replace SCNMatrix4 with SCNMatrix4FromMat4.
 
