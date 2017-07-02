@@ -30,6 +30,12 @@ Simply navigate to your directory of interest, then clone.
 $ git clone https://github.com/farice/ARShooter.git
 ```
 
+If you'd like bullets to disappear rather than collect in the space around you, then switch to the `bullets-disappear` branch
+
+```bash
+ $ git checkout bullets-disappear
+```
+
 Finally, open the `*.xcodeproj` file and build to your [supported device](#requirements)
 
 ## FAQ
