@@ -12,14 +12,13 @@ import SceneKit
 import ARKit
 import AVFoundation
 
-var player: AVAudioPlayer!
-
-
 class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
     @IBOutlet weak var scoreLabel: UILabel!
+    
+    var player: AVAudioPlayer!
     
     private var userScore: Int = 0 {
         didSet {
@@ -226,14 +225,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     func playSoundEffect(ofType effect: SoundEffect) {
         
-        // Async to avoid substantial cost to graphics processing
+        // Async to avoid substantial cost to graphics processing (may result in sound effect delay however)
         DispatchQueue.main.async {
             do
             {
                 if let effectURL = Bundle.main.url(forResource: effect.rawValue, withExtension: "mp3") {
                     
-                    try player = AVAudioPlayer(contentsOf: effectURL)
-                    player.play()
+                    self.player = try AVAudioPlayer(contentsOf: effectURL)
+                    self.player.play()
                     
                 }
             }
