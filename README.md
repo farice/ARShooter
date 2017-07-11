@@ -48,6 +48,15 @@ Please update to the latest Xcode beta (this error is a result of a syntactical 
 
 ---
 
+## Thanks
+
+ARShooter has been featured by
+
+* [ManiacDev](https://maniacdev.com/2017/06/arshooter-an-example-shooter-created-using-ios-11s-arkit)
+* [Gank](http://gank.io/2017/06/09)
+* [Swift News](http://swiftnews.curated.co/issues/134)
+* [Juejin](https://juejin.im/)
+
 ## License
 
 ARShooter is released under the Apache license. [See LICENSE](https://github.com/farice/ARShooter/blob/master/LICENSE) for details.
