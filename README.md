@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](#license)
 
-ARShooter is an open source Augmented Reality shooter made with ARKit and written in Swift. Hence, it is only useable with the iOS 11 beta.
+ARShooter is an open source Augmented Reality shooter made with ARKit and written in Swift. Hence, it is only useable with the iOS 11.
 
 For more details on how to get started with ARKit and make your own AR Shooter, take a look at the complementary (and complimentary) [tutorial](http://texnotes.me/post/5/).
 
@@ -10,11 +10,11 @@ For more details on how to get started with ARKit and make your own AR Shooter, 
 
 ## Requirements
 
-* Xcode 9 Beta 2
-* iOS 11 Beta 2
-* A9 or better chip for ARWorldTrackingSessionConfiguration
+* Xcode 9
+* iOS 11
+* A9 or better chip for ARWorldTrackingConfiguration
 
-> Note: The app automatically detects if your device supports the ARWorldTrackingSessionConfiguration. If not, it will use the less immersive ARSessionConfiguration, which is to be supported by all devices. However, at the current time (Beta 2), ARSessionConfiguration is also only supported by devices with an A9 or better chip. See the [release notes](https://9to5mac.com/2017/06/21/apple-ios-11-beta-2/) for details. **This means you need an iPhone 6S or better to use ARKit at the current time.**
+> Note: The app automatically detects if your device supports the ARWorldTrackingConfiguration. If not, it will use the less immersive AROrientationTrackingConfiguration, which is supported by all devices.
 
 ## Communication
 
@@ -44,7 +44,7 @@ Finally, open the `*.xcodeproj` file and build to your [supported device](#requi
 
 `Cannot invoke initializer for type 'SCNMatrix4' with an argument list of type '(matrix_float4x4)'`
 
-Please update to the latest Xcode beta (this error is a result of a syntactical change made in Beta 2). If you insist on using Xcode Beta 1, then simply replace SCNMatrix4 with SCNMatrix4FromMat4.
+Please update to the latest Xcode version (this error is a result of a syntactical change made in Beta 2). If you insist on using Xcode Beta 1, then simply replace SCNMatrix4 with SCNMatrix4FromMat4.
 
 ---
 
