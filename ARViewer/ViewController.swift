@@ -138,17 +138,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     // MARK: - Game Functionality
     
     func configureSession() {
-        if ARWorldTrackingSessionConfiguration.isSupported { // checks if user's device supports the more precise ARWorldTrackingSessionConfiguration
+        if ARWorldTrackingConfiguration.isSupported { // checks if user's device supports the more precise ARWorldTrackingSessionConfiguration
                                                             // equivalent to `if utsname().hasAtLeastA9()`
         // Create a session configuration
-        let configuration = ARWorldTrackingSessionConfiguration()
-        configuration.planeDetection = ARWorldTrackingSessionConfiguration.PlaneDetection.horizontal
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = ARWorldTrackingConfiguration.PlaneDetection.horizontal
         
         // Run the view's session
         sceneView.session.run(configuration)
         } else {
             // slightly less immersive AR experience due to lower end processor
-            let configuration = ARSessionConfiguration()
+            let configuration = AROrientationTrackingConfiguration()
             
             // Run the view's session
             sceneView.session.run(configuration)
