@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](#license)
 
-ARShooter is an open source Augmented Reality shooter made with ARKit and written in Swift. Hence, it is only useable with the iOS 11.
+ARShooter is an open source Augmented Reality shooter made with ARKit and written in Swift. Hence, it is only useable with iOS 11.
 
 For more details on how to get started with ARKit and make your own AR Shooter, take a look at the complementary (and complimentary) [tutorial](http://texnotes.me/post/5/).
 
